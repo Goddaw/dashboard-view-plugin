@@ -53,9 +53,15 @@ public class TestUtil {
    }
 
    public static TestResult getTestResult(Run run) {
-      AbstractTestResultAction tra = run.getAction(AbstractTestResultAction.class);
-      if (tra != null) {
-         return new TestResult(run.getParent(), tra.getTotalCount(), tra.getFailCount(), tra.getSkipCount());
+	  TestResultAction tra = run.getAction(TestResultAction.class);
+	  if(tra != null) {
+		  hudson.tasks.junit.TestResult result = tra.getResult();
+		  return new JUnitTestResult(run.getParent(), result);
+	  }
+	  
+      AbstractTestResultAction atra = run.getAction(AbstractTestResultAction.class);
+      if (atra != null) {
+         return new TestResult(run.getParent(), atra.getTotalCount(), atra.getFailCount(), atra.getSkipCount());
       } 
       
       SurefireAggregatedReport surefireTestResults = run.getAction(SurefireAggregatedReport.class);
