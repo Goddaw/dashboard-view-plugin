@@ -33,7 +33,7 @@ public class TestResult {
    }
 
    public double getSuccessPct() {
-      return tests != 0 ? ((double) success / tests) : 0d;
+      return getTests() != 0 ? ((double) getSuccess() / getTests()) : 0d;
    }
 
    public int getFailed() {
@@ -41,7 +41,7 @@ public class TestResult {
    }
 
    public double getFailedPct() {
-      return tests != 0 ? ((double) failed / tests) : 0d;
+      return getTests() != 0 ? ((double) getFailed() / getTests()) : 0d;
    }
 
    public int getSkipped() {
@@ -49,6 +49,6 @@ public class TestResult {
    }
 
    public double getSkippedPct() {
-      return tests != 0 ? ((double) skipped / tests) : 0d;
+      return getTests() != 0 ? ((double) getSkipped() / getTests()) : 0d;
    }
 }
