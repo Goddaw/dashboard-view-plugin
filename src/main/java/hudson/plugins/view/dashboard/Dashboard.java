@@ -1,5 +1,6 @@
 package hudson.plugins.view.dashboard;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import hudson.DescriptorExtensionList;
 import hudson.Extension;
 import hudson.Util;
@@ -21,6 +22,8 @@ import javax.servlet.ServletException;
 
 import net.sf.json.JSONObject;
 
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.DoNotUse;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 
@@ -40,6 +43,10 @@ public class Dashboard extends ListView {
      * Show standard jobs list at the top of the page
      */
     private boolean includeStdJobList = false;
+    /*
+     * Hide standard Jenkins panels (full screen view)
+     */
+    private boolean hideJenkinsPanels = false;
     /*
      * The width of the left portlets
      */
@@ -64,6 +71,10 @@ public class Dashboard extends ListView {
 
     public boolean isIncludeStdJobList() {
         return includeStdJobList;
+    }
+
+    public boolean isHideJenkinsPanels() {
+        return hideJenkinsPanels;
     }
 
     public List<DashboardPortlet> getLeftPortlets() {
@@ -123,7 +134,9 @@ public class Dashboard extends ListView {
     }
 
     /* Use contains */
-    //@Deprecated
+    @Deprecated
+    @SuppressFBWarnings(value = "NM_METHOD_NAMING_CONVENTION", justification = "backwards compatibility, but seems unused internally.")
+    @Restricted(DoNotUse.class)
     public synchronized boolean HasItem(TopLevelItem item) {
         List<TopLevelItem> items = getItems();
         return items.contains(item);
@@ -156,6 +169,9 @@ public class Dashboard extends ListView {
 
         String sIncludeStdJobList = Util.nullify(req.getParameter("includeStdJobList"));
         includeStdJobList = sIncludeStdJobList != null && "on".equals(sIncludeStdJobList);
+
+        String shideJenkinsPanels = Util.nullify(req.getParameter("hideJenkinsPanels"));
+        hideJenkinsPanels = shideJenkinsPanels != null && "on".equals(shideJenkinsPanels);
 
         String sUseCssStyle = Util.nullify(req.getParameter("useCssStyle"));
         useCssStyle = sUseCssStyle != null && "on".equals(sUseCssStyle);
